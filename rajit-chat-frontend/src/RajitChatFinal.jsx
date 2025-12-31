@@ -363,10 +363,14 @@ export default function RajitChatFinal() {
     setMessages(m => [...m, loadingMsg]);
 
     try {
-      const res = await fetch(API_BASE, {
+      const res = await fetch(`${API_BASE}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: text, source: token }) // use token here
+        body: JSON.stringify({
+          question: text,
+          token: "",
+          source: "netlify"
+        })
       });
       const data = await res.json();
       const full = data.answer || 'No answer available.';
