@@ -118,12 +118,15 @@ function shareImportantToken(a, b) {
 }
 
 export default function RajitChatFinal() {
+  const params = new URLSearchParams(window.location.search);
+  const source = params.get("source") || "netlify";
+  const token = params.get("token") || "anonymous";
+
   const [dark, setDark] = useState(true); // default dark
   const [started, setStarted] = useState(false);
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [token] = useState(detectToken()); // <-- use token instead of source
 
   // Micro-prompt state: unused prompts (stateful so UI re-renders), selection stats kept in refs
   const [unusedPrompts, setUnusedPrompts] = useState(() => shuffleInPlace([...MICRO_PROMPT_POOL]));
@@ -368,8 +371,8 @@ export default function RajitChatFinal() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: text,
-          token: "",
-          source: "netlify"
+          source, // use from params
+          token,  // use from params
         })
       });
       const data = await res.json();

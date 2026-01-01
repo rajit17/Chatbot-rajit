@@ -17,22 +17,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const API_BASE = "https://rajit-fastapi-backend.onrender.com";
 
-function detectSource() {
-  try {
-    const u = new URL(window.location.href);
-    return u.searchParams.get('source') || 'anonymous';
-  } catch {
-    return 'anonymous';
-  }
-}
-
 export default function RajitChatFinal() {
+  const params = new URLSearchParams(window.location.search);
+  const source = params.get("source") || "netlify";
+  const token = params.get("token") || "anonymous";
+
   const [dark, setDark] = useState(true); // default dark
   const [started, setStarted] = useState(false);
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [source, setSource] = useState(detectSource());
 
   // refs
   const heroInputRef = useRef(null);
@@ -72,10 +66,14 @@ export default function RajitChatFinal() {
     setLoading(true);
 
     try {
-      const res = await fetch(API_BASE, {
+      const res = await fetch(`${API_BASE}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: text, source })
+        body: JSON.stringify({
+          question: text,
+          source, // use from params
+          token,  // use from params
+        })
       });
       const data = await res.json();
       setMessages(m => [...m, { role: 'assistant', text: data.answer || 'No answer available.' }]);
