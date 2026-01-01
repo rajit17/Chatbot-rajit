@@ -493,9 +493,8 @@ export default function RajitChatFinal() {
           transition={sharedTransition}
           className={started ? "flex-1 flex flex-col relative w-full items-center" : "relative w-full flex justify-center items-center"}
           style={{
-            // Ensure background is always consistent to avoid black flash
             background: started ? 'inherit' : 'inherit',
-            minHeight: started ? '100vh' : undefined,
+            minHeight: '100vh', // always full height to prevent black flash
             transition: 'background 0.3s, opacity 0.3s'
           }}
         >
@@ -510,7 +509,7 @@ export default function RajitChatFinal() {
                 exit={{ opacity: 0, scale: 0.99, y: -10 }}
                 transition={sharedTransition}
                 className="rounded-2xl bg-gray-50 dark:bg-gray-900 text-black dark:text-white border border-gray-200 dark:border-gray-800 p-6 shadow-md max-w-3xl w-full mx-auto"
-                style={{ minWidth: 340 }}
+                style={{ minWidth: 340, minHeight: 340 }}
               >
                 <div className="text-center mb-4">
                   <h2 className="text-2xl font-semibold">Ask about Rajit's academic work</h2>
@@ -518,39 +517,36 @@ export default function RajitChatFinal() {
                     e.g. Summarize Rajit's ISRO internship contributions
                   </p>
                 </div>
-
-                <form onSubmit={(e) => { e.preventDefault(); submitQuestion(); }} className="flex flex-col items-center gap-3">
-                  <input
-                    ref={heroInputRef}
-                    value={query}
-                    onChange={e => setQuery(e.target.value)}
-                    placeholder="Ask a question…"
-                    className="w-full rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-
+                {/* Input and Send button side-by-side */}
+                <form onSubmit={(e) => { e.preventDefault(); submitQuestion(); }} className="flex flex-col items-center gap-3 w-full">
+                  <div className="flex w-full gap-2">
+                    <input
+                      ref={heroInputRef}
+                      value={query}
+                      onChange={e => setQuery(e.target.value)}
+                      placeholder="Ask a question…"
+                      className="flex-1 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="px-4 py-2 rounded-full text-sm"
+                      style={{
+                        background: 'var(--accent)',
+                        color: 'var(--on-accent)',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
+                      }}
+                    >
+                      {loading ? '…' : 'Send'}
+                    </button>
+                  </div>
                   <div className="flex flex-wrap justify-center gap-2 mt-3">
                     {chips.map((c, i) => (
                       <button key={i} type="button" onClick={() => submitQuestion(c)} className="text-sm px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-black dark:text-white">{c}</button>
                     ))}
                   </div>
-
-                  {/* Send button always visible */}
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="px-4 py-2 rounded-full text-sm mt-3"
-                    style={{
-                      background: 'var(--accent)',
-                      color: 'var(--on-accent)',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
-                    }}
-                  >
-                    {loading ? '…' : 'Send'}
-                  </button>
-
-                  {/* Helper text always visible under send button */}
                   <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
-                    Type your question or select a suggestion above to get started. 
+                    No login required • Conversations logged for internal review
                   </div>
                 </form>
               </motion.div>
@@ -568,7 +564,7 @@ export default function RajitChatFinal() {
                 transition={sharedTransition}
                 className="flex-1 flex flex-col bg-white dark:bg-black text-black dark:text-white w-full items-center"
                 style={{
-                  minHeight: '100vh', // ensure full height to avoid black flash
+                  minHeight: '100vh', // always full height to prevent black flash
                   transition: 'opacity 0.3s',
                   opacity: started ? 1 : 0
                 }}
