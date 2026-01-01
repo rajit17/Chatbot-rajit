@@ -442,11 +442,9 @@ export default function RajitChatFinal() {
     setUnusedPrompts(shuffleInPlace([...MICRO_PROMPT_POOL]));
   }
 
-  // legacy chips shown on hero - keep intact
+  // legacy chips shown on hero - keep intact but update wording for minimalism
   const chips = [
-    "Summarize Rajit's ISRO work",
-    "Which projects show ML skills?",
-    "Short CV-style bullets"
+    "ISRO internship summary"
   ];
 
   // Minimal wrapper for old generateSuggestions call: compute contextual suggestions only from the message.suggestions field
@@ -473,7 +471,7 @@ export default function RajitChatFinal() {
           <div className="flex items-center justify-between w-full max-w-3xl px-4">
             <div>
               <div className="text-sm text-gray-600 dark:text-gray-300">Rajit Shrivastava</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">Interactive academic assistant</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Academic profile assistant</div>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -488,7 +486,17 @@ export default function RajitChatFinal() {
           </div>
         </div>
 
-        <motion.div layout transition={sharedTransition} className={started ? "flex-1 flex flex-col relative w-full items-center" : "relative w-full flex justify-center items-center"}>
+        <motion.div
+          layout
+          transition={sharedTransition}
+          className={started ? "flex-1 flex flex-col relative w-full items-center" : "relative w-full flex justify-center items-center"}
+          style={{
+            // Add a subtle fade for the main panel transition
+            transition: 'background 0.3s, opacity 0.3s',
+            opacity: started ? 1 : 1,
+            background: started ? undefined : undefined
+          }}
+        >
 
           {/* HERO (centered input when not started) */}
           <AnimatePresence>
@@ -503,8 +511,9 @@ export default function RajitChatFinal() {
                 style={{ minWidth: 340 }}
               >
                 <div className="text-center mb-4">
-                  <h2 className="text-2xl font-semibold">Ask about Rajit's research</h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">Type a clear, specific question. The chat will move up and keep the conversation.</p>
+                  <h2 className="text-2xl font-semibold">Ask about Rajit's academic work</h2>
+                  {/* Subtitle is now minimal */}
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-2"></p>
                 </div>
 
                 <form onSubmit={(e) => { e.preventDefault(); submitQuestion(); }} className="flex flex-col items-center gap-3">
@@ -512,7 +521,7 @@ export default function RajitChatFinal() {
                     ref={heroInputRef}
                     value={query}
                     onChange={e => setQuery(e.target.value)}
-                    placeholder="e.g. Summarize Rajit's ISRO internship contributions"
+                    placeholder="Ask a question…"
                     className="w-full rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
 
@@ -522,7 +531,7 @@ export default function RajitChatFinal() {
                     ))}
                   </div>
 
-                  <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">No login required • Conversations logged for internal review</div>
+                  {/* Remove helper text about logging/internal review */}
                 </form>
               </motion.div>
             )}
@@ -538,7 +547,12 @@ export default function RajitChatFinal() {
                 exit={{ opacity: 0, y: 8 }}
                 transition={sharedTransition}
                 className="flex-1 flex flex-col bg-white dark:bg-black text-black dark:text-white w-full items-center"
-                style={{ minHeight: 0 }}
+                style={{
+                  minHeight: 0,
+                  // Add fade for initial appearance
+                  transition: 'opacity 0.3s',
+                  opacity: started ? 1 : 0
+                }}
               >
 
                 {/* Messages scroll area */}
@@ -629,7 +643,7 @@ export default function RajitChatFinal() {
                       ref={chatInputRef}
                       value={query}
                       onChange={e => setQuery(e.target.value)}
-                      placeholder="Type your question — press Enter to send"
+                      placeholder="Ask a question…"
                       className="w-full rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       style={{ marginRight: '8px' }}
                     />
