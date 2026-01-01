@@ -512,7 +512,7 @@ export default function RajitChatFinal() {
                 style={{
                   minWidth: 340,
                   minHeight: 370, // Ensures balanced height for all content
-                  maxWidth: 480,
+                  
                 }}
               >
                 <div className="text-center mb-4">
