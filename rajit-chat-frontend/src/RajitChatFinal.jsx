@@ -508,8 +508,12 @@ export default function RajitChatFinal() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.99, y: -10 }}
                 transition={sharedTransition}
-                className="rounded-2xl bg-gray-50 dark:bg-gray-900 text-black dark:text-white border border-gray-200 dark:border-gray-800 p-6 shadow-md max-w-3xl w-full mx-auto"
-                style={{ minWidth: 340, minHeight: 340 }}
+                className="rounded-2xl bg-gray-50 dark:bg-gray-900 text-black dark:text-white border border-gray-200 dark:border-gray-800 p-6 shadow-md max-w-3xl w-full mx-auto flex flex-col justify-center"
+                style={{
+                  minWidth: 340,
+                  minHeight: 370, // Ensures balanced height for all content
+                  maxWidth: 480,
+                }}
               >
                 <div className="text-center mb-4">
                   <h2 className="text-2xl font-semibold">Ask about Rajit's academic work</h2>
@@ -546,7 +550,7 @@ export default function RajitChatFinal() {
                     ))}
                   </div>
                   <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
-                    No login required • Conversations logged for internal review
+                    Example questions to get you started
                   </div>
                 </form>
               </motion.div>
