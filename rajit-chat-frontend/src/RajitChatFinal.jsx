@@ -442,9 +442,11 @@ export default function RajitChatFinal() {
     setUnusedPrompts(shuffleInPlace([...MICRO_PROMPT_POOL]));
   }
 
-  // legacy chips shown on hero - keep intact but update wording for minimalism
+  // restore original chips and example prompt
   const chips = [
-    "ISRO internship summary"
+    "Summarize Rajit's ISRO work",
+    "Which projects show ML skills?",
+    "Short CV-style bullets"
   ];
 
   // Minimal wrapper for old generateSuggestions call: compute contextual suggestions only from the message.suggestions field
@@ -466,7 +468,7 @@ export default function RajitChatFinal() {
 
       {/* Centered container for header + chat/hero */}
       <div className={started ? "fixed inset-0 z-10 flex flex-col items-center" : "w-full min-h-screen flex flex-col items-center justify-center"}>
-        {/* Header: always above the chat/hero box, centered and systematic */}
+        {/* Header */}
         <div className="w-full flex flex-col items-center mb-4">
           <div className="flex items-center justify-between w-full max-w-3xl px-4">
             <div>
@@ -491,10 +493,10 @@ export default function RajitChatFinal() {
           transition={sharedTransition}
           className={started ? "flex-1 flex flex-col relative w-full items-center" : "relative w-full flex justify-center items-center"}
           style={{
-            // Add a subtle fade for the main panel transition
-            transition: 'background 0.3s, opacity 0.3s',
-            opacity: started ? 1 : 1,
-            background: started ? undefined : undefined
+            // Ensure background is always consistent to avoid black flash
+            background: started ? 'inherit' : 'inherit',
+            minHeight: started ? '100vh' : undefined,
+            transition: 'background 0.3s, opacity 0.3s'
           }}
         >
 
@@ -512,8 +514,9 @@ export default function RajitChatFinal() {
               >
                 <div className="text-center mb-4">
                   <h2 className="text-2xl font-semibold">Ask about Rajit's academic work</h2>
-                  {/* Subtitle is now minimal */}
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-2"></p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                    e.g. Summarize Rajit's ISRO internship contributions
+                  </p>
                 </div>
 
                 <form onSubmit={(e) => { e.preventDefault(); submitQuestion(); }} className="flex flex-col items-center gap-3">
@@ -531,7 +534,24 @@ export default function RajitChatFinal() {
                     ))}
                   </div>
 
-                  {/* Remove helper text about logging/internal review */}
+                  {/* Send button always visible */}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="px-4 py-2 rounded-full text-sm mt-3"
+                    style={{
+                      background: 'var(--accent)',
+                      color: 'var(--on-accent)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
+                    }}
+                  >
+                    {loading ? '…' : 'Send'}
+                  </button>
+
+                  {/* Helper text always visible under send button */}
+                  <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
+                    Type your question or select a suggestion above to get started. 
+                  </div>
                 </form>
               </motion.div>
             )}
@@ -548,8 +568,7 @@ export default function RajitChatFinal() {
                 transition={sharedTransition}
                 className="flex-1 flex flex-col bg-white dark:bg-black text-black dark:text-white w-full items-center"
                 style={{
-                  minHeight: 0,
-                  // Add fade for initial appearance
+                  minHeight: '100vh', // ensure full height to avoid black flash
                   transition: 'opacity 0.3s',
                   opacity: started ? 1 : 0
                 }}
