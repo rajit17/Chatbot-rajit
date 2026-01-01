@@ -140,7 +140,7 @@ export default function RajitChatFinal() {
                 <div className="text-center mb-4">
                   <h2 className="text-2xl font-semibold">Ask about Rajit's academic work</h2>
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
-                    e.g. Summarize Rajit's ISRO internship contributions
+                    
                   </p>
                 </div>
 
@@ -164,7 +164,7 @@ export default function RajitChatFinal() {
                   </div>
 
                   <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
-                    No login required • Conversations logged for internal review
+                    Example questions to get you started
                   </div>
                 </form>
               </motion.div>

@@ -514,7 +514,7 @@ export default function RajitChatFinal() {
                 <div className="text-center mb-4">
                   <h2 className="text-2xl font-semibold">Ask about Rajit's academic work</h2>
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
-                    e.g. Summarize Rajit's ISRO internship contributions
+                    
                   </p>
                 </div>
                 {/* Input and Send button side-by-side */}
