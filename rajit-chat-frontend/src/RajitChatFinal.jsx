@@ -31,6 +31,33 @@ const _dotCss = `
 .dot-typing span:nth-child(2){ animation-delay:0.15s } .dot-typing span:nth-child(3){ animation-delay:0.3s }
 .dark .dot-typing{ background:rgba(255,255,255,0.04); }
 
+/* Modern loader spinner */
+@keyframes modern-spin { 100% { transform: rotate(360deg); } }
+.modern-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.06);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+.dark .modern-loader { background: rgba(255,255,255,0.04); }
+.modern-loader-spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #d1d5db;
+  border-top: 3px solid #6366f1;
+  border-radius: 50%;
+  animation: modern-spin 0.8s linear infinite;
+}
+.dark .modern-loader-spinner {
+  border: 3px solid #333;
+  border-top: 3px solid #818cf8;
+}
+
 /* minimal markdown styling for chat messages */
 .chat-md { color: inherit; }
 .chat-md blockquote { border-left: 3px solid rgba(0,0,0,0.12); margin:0 0 0.5rem; padding:0.25rem 0 0.25rem 0.75rem; color: rgba(0,0,0,0.8); }
@@ -122,7 +149,8 @@ export default function RajitChatFinal() {
   const source = params.get("source") || "netlify";
   const token = params.get("token") || "anonymous";
 
-  const [dark, setDark] = useState(true); // default dark
+  // Default theme to light (was: true)
+  const [dark, setDark] = useState(false); // default light
   const [started, setStarted] = useState(false);
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([]);
@@ -182,6 +210,22 @@ export default function RajitChatFinal() {
     document.head.appendChild(s);
     return () => s.remove();
   }, []);
+
+  // Modern loading words for the loader
+  const loadingWords = [
+    "Analyzing", "Thinking", "Understanding", "Reflecting", "Processing", "Reviewing", "Considering", "Exploring"
+  ];
+  const [loadingWordIdx, setLoadingWordIdx] = useState(0);
+
+  // Cycle loading word every 1s when loading is true
+  useEffect(() => {
+    if (!loading) return;
+    setLoadingWordIdx(0);
+    const interval = setInterval(() => {
+      setLoadingWordIdx(idx => (idx + 1) % loadingWords.length);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [loading]);
 
   // -------------------- Micro-prompt helpers --------------------
 
@@ -604,8 +648,13 @@ export default function RajitChatFinal() {
                               style={{ background: 'var(--accent)', color: 'var(--on-accent)' }}
                             >
                               {m.loading ? (
-                                <div className="dot-typing text-gray-700 dark:text-gray-200">
-                                  <span></span><span></span><span></span>
+                                // Modern loader with rotating status word
+                                <div className="modern-loader text-gray-700 dark:text-gray-200">
+                                  <span className="modern-loader-spinner"></span>
+                                  <span>
+                                    {loadingWords[loadingWordIdx]}
+                                    <span className="opacity-60 animate-pulse">...</span>
+                                  </span>
                                 </div>
                               ) : (
                                 <div className="text-sm whitespace-pre-wrap chat-md">
